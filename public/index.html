@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Instagram Growth Engine</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:2px;
+
+    background:
+    radial-gradient(circle at top left,
+    rgba(255,120,40,.35),
+    transparent 25%),
+
+    radial-gradient(circle at bottom right,
+    rgba(193,53,132,.35),
+    transparent 25%),
+
+    linear-gradient(
+    135deg,
+    #0e1016,
+    #090909,
+    #12131a
+    );
+
+    color:white;
+
+    position:relative;
+}
+
+/* BIG BACKGROUND GLASS */
+
+body::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    backdrop-filter:blur(80px);
+
+    background:
+    linear-gradient(
+    180deg,
+    rgba(255,255,255,.03),
+    rgba(255,255,255,.01)
+    );
+}
+
+/* MAIN CONTENT */
+
+.wrapper{
+    margin: 5px;
+    position:relative;
+    z-index:5;
+
+    width:100%;
+    max-width:430px;
+}
+
+/* NAV */
+
+.nav{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom: 70px;
+}
+
+.logo{
+    font-size:38px;
+    font-weight: bold;
+    font-family:'Poppins',sans-serif;
+    line-height:1;
+
+    background:
+    linear-gradient(
+    90deg,
+    #feda75,
+    #fa7e1e,
+    #d62976,
+    #962fbf,
+    #4f5bd5
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.live{
+
+    padding:10px 16px;
+
+    border-radius:30px;
+
+    font-size:12px;
+    font-weight:600;
+
+    backdrop-filter:blur(20px);
+
+    background:
+    rgba(255,255,255,.08);
+
+    border:
+    1px solid rgba(255,255,255,.1);
+
+    box-shadow:
+    0 4px 18px rgba(0,0,0,.2);
+}
+
+/* HERO */
+
+.hero{
+
+    text-align:center;
+}
+
+.hero h1{
+
+    font-size:40px;
+    line-height:1.2;
+
+    margin-bottom:16px;
+
+    font-weight:700;
+}
+
+.gradient-text{
+    font-family:'Grand Hotel',cursive;
+    background:
+    linear-gradient(
+    90deg,
+    #feda75,
+    #fa7e1e,
+    #d62976,
+    #962fbf
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.hero p{
+
+    font-size:15px;
+
+    line-height:1.8;
+
+    color:#c7c7c7;
+
+    margin-bottom:34px;
+}
+
+/* MAIN CTA */
+
+.cta{
+
+    width:100%;
+    height:66px;
+
+    border:none;
+
+    border-radius:24px;
+
+    cursor:pointer;
+
+    font-size:18px;
+    font-weight:700;
+
+    color:white;
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:
+    linear-gradient(
+    135deg,
+    #ff9966,
+    #ff5e62,
+    #d6249f,
+    #285AEB
+    );
+
+    background-size:250%;
+
+    animation:gradientMove 6s ease infinite;
+
+    box-shadow:
+    0 0 0 1px rgba(255,255,255,.08),
+    0 10px 35px rgba(214,41,118,.45),
+    0 0 40px rgba(214,41,118,.35);
+
+    transition:.25s;
+
+    /* NEW */
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    text-decoration:none;
+}
+
+.cta::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:-120%;
+
+    width:100%;
+    height:100%;
+
+    background:
+    linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.25),
+    transparent
+    );
+
+    transition:.6s;
+}
+
+.cta:hover::before{
+    left:120%;
+}
+
+.cta:active{
+    transform:scale(.97);
+}
+
+@keyframes gradientMove{
+
+    0%{
+        background-position:0%;
+    }
+
+    50%{
+        background-position:100%;
+    }
+
+    100%{
+        background-position:0%;
+    }
+}
+
+/* STATS */
+
+.stats{
+
+    display:flex;
+
+    gap:14px;
+
+    margin-top:34px;
+}
+
+.stat{
+
+    flex:1;
+
+    padding:18px 14px;
+
+    border-radius:24px;
+
+    text-align:center;
+
+    backdrop-filter:blur(24px);
+
+    background:
+    rgba(255,255,255,.06);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 4px 20px rgba(0,0,0,.15);
+}
+
+.stat h3{
+
+    font-size:22px;
+
+    margin-bottom:5px;
+}
+
+.stat p{
+
+    font-size:12px;
+
+    color:#b5b5b5;
+}
+
+/* FEATURES */
+
+.features{
+
+    margin-top:36px;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:16px;
+}
+
+.feature{
+
+    display:flex;
+    align-items:center;
+
+    gap:16px;
+
+    padding:18px;
+
+    border-radius:26px;
+
+    backdrop-filter:blur(24px);
+
+    background:
+    rgba(255,255,255,.05);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 6px 24px rgba(0,0,0,.15);
+}
+
+.icon{
+
+    width:58px;
+    height:58px;
+
+    min-width:58px;
+
+    border-radius:20px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:22px;
+
+    background:
+    linear-gradient(
+    135deg,
+    rgba(255,255,255,.18),
+    rgba(255,255,255,.08)
+    );
+
+    backdrop-filter:blur(14px);
+
+    border:
+    1px solid rgba(255,255,255,.1);
+
+    color:white;
+}
+
+.feature h4{
+
+    font-size:16px;
+
+    margin-bottom:5px;
+}
+
+.feature p{
+
+    font-size:13px;
+
+    line-height:1.6;
+
+    color:#bdbdbd;
+}
+
+.legal-links{
+
+    margin-top:22px;
+
+    display:flex;
+    justify-content:center;
+    gap:18px;
+
+    flex-wrap:wrap;
+}
+
+.legal-links a{
+
+    color:#b8b8b8;
+
+    text-decoration:none;
+
+    font-size:12px;
+
+    transition:.25s;
+}
+
+.legal-links a:hover{
+
+    color:white;
+}
+
+/* FOOTER */
+
+.footer{
+
+    margin-top:26px;
+
+    text-align:center;
+
+    font-size:11px;
+
+    line-height:1.8;
+
+    color:#888;
+}
+
+/* MOBILE */
+
+@media(max-width:420px){
+
+    body{
+        padding:16px;
+    }
+
+    .logo{
+        font-size:50px;
+    }
+
+    .hero h1{
+        font-size:32px;
+    }
+
+    .hero p{
+        font-size:14px;
+    }
+
+    .stats{
+        gap:10px;
+    }
+
+    .stat{
+        padding:16px 10px;
+    }
+
+    .feature{
+        padding:16px;
+    }
+
+    .cta{
+        height:60px;
+        font-size:16px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <!-- NAV -->
+
+    <div class="nav">
+
+        <div class="logo">
+            InstaBoost
+        </div>
+
+        <div class="live">
+            LIVE BOOST
+        </div>
+
+    </div>
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+        <h1>
+            Grow Your <span class="gradient-text">Instagram</span> Audience Faster 🚀
+        </h1>
+
+        <p>
+            Boost followers, increase engagement, and expand your profile reach using our AI-powered Instagram growth engine.
+        </p>
+
+        <!-- BUTTON -->
+
+        <!-- BUTTON -->
+        <a href="/signup" class="cta">
+            🔥 Start Free Followers Boost
+        </a>
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+        <div class="stat">
+            <h3>450K+</h3>
+            <p>Creators</p>
+        </div>
+
+        <div class="stat">
+            <h3>24H</h3>
+            <p>Delivery</p>
+        </div>
+
+        <div class="stat">
+            <h3>99%</h3>
+            <p>Secure</p>
+        </div>
+
+    </div>
+
+    <!-- FEATURES -->
+
+    <div class="features">
+
+        <div class="feature">
+
+            <div class="icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+
+            <div>
+                <h4>Organic Growth Engine</h4>
+
+                <p>
+                    Smart targeting technology designed for authentic audience engagement.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="feature">
+
+            <div class="icon">
+                <i class="fa-solid fa-fire"></i>
+            </div>
+
+            <div>
+                <h4>Trending Reach Boost</h4>
+
+                <p>
+                    Increase profile visibility and improve chances of going viral faster.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="feature">
+
+            <div class="icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div>
+                <h4>Advanced Account Security</h4>
+
+                <p>
+                    Encrypted protection system keeps your Instagram account secure.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+<div class="legal-links">
+
+    <a href="/privacy">Privacy Policy</a>
+
+    <a href="/terms">Terms & Conditions</a>
+
+    <a href="/disclaimer">Disclaimer</a>
+
+</div>
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        SSL Protected • Trusted by Global Creators <br>
+        © 2026 InstaBoost Technologies
+
+    </div>
+
+</div>
+
+</body>
+</html>
