@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROOT@SYSTEM:~// CENTRAL_DATABASE_OVERRIDE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: #050505;
+            color: #39ff14;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        /* Hidden initially to prevent data leak before key confirmation */
+        .container {
+            max-width: 1200px;
+            margin: 10px auto;
+            width: 100%;
+            display: none;
+            border: 1px solid #39ff14;
+            background: #000;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.1);
+        }
+        
+        .terminal-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px dashed #39ff14;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .terminal-top-bar h1 {
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+
+        .terminal-top-bar h1 span {
+            color: #39ff14;
+        }
+
+        .terminal-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .cmd-btn {
+            background: transparent;
+            border: 1px solid #39ff14;
+            color: #39ff14;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+        }
+        
+        .cmd-btn:hover {
+            background: #39ff14;
+            color: #000;
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
+        }
+
+        .cmd-btn.exit-node {
+            border-color: #ff3333;
+            color: #ff3333;
+        }
+
+        .cmd-btn.exit-node:hover {
+            background: #ff3333;
+            color: #000;
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.4);
+        }
+
+        /* Matrix Theme Grid Table */
+        .shell-wrapper {
+            border: 1px solid #222;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: #111;
+            color: #fff;
+            padding: 14px;
+            border-bottom: 2px solid #39ff14;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #1c1c1c;
+            color: #39ff14;
+            word-break: break-all;
+        }
+
+        tr:hover td {
+            background-color: #0a1405;
+        }
+
+        .no-records-terminal {
+            text-align: center;
+            padding: 40px;
+            color: #ff3333;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* Decrypted Data Highlight Box */
+        .data-stream-badge {
+            background: rgba(57, 255, 20, 0.05);
+            padding: 4px 8px;
+            border: 1px dashed rgba(57, 255, 20, 0.4);
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* Destructive Terminal Trigger Input */
+        .purge-btn {
+            background: transparent;
+            border: 1px solid #ff3333;
+            color: #ff3333;
+            padding: 5px 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+        }
+
+        .purge-btn:hover {
+            background: #ff3333;
+            color: #000;
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .terminal-top-bar { flex-direction: column; gap: 15px; align-items: flex-start; }
+            th, td { padding: 10px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="adminContent">
+        <div class="terminal-top-bar">
+            <h1>root@system:~# <span>./show_database_logs.sh</span></h1>
+            <div class="terminal-actions">
+                <button class="cmd-btn" id="refreshBtn">[SYNC_STREAM]</button>
+                <button class="cmd-btn exit-node" id="logoutBtn">[EXIT_NODE]</button>
+            </div>
+        </div>
+
+        <div class="shell-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>[FIELD_NAME]</th>
+                        <th>[IDENTIFIER_NODE]</th>
+                        <th>[DECRYPTED_KEY]</th>
+                        <th>[COMMANDS]</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr>
+                        <td colspan="4" class="no-records-terminal">FETCHING LOG DATA CHUNKS...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const tableBody = document.getElementById('usersTableBody');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const adminContent = document.getElementById('adminContent');
+
+        let activeSessionToken = localStorage.getItem('admin_session_token');
+
+        // Security Shield Route Enforcer - Fixed to camelCase
+        if (!activeSessionToken) {
+            window.location.href = '/adminLogin';
+        }
+
+        async function fetchUsers() {
+            try {
+                const response = await fetch('/api/users/all-records', {
+                    method: 'GET',
+                    headers: { 'x-admin-pin': activeSessionToken }
+                });
+
+                if (!response.ok) {
+                    localStorage.removeItem('admin_session_token');
+                    window.location.href = '/adminLogin';
+                    return;
+                }
+                
+                const data = await response.json();
+                adminContent.style.display = 'block'; 
+                tableBody.innerHTML = '';
+
+                if (data.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="4" class="no-records-terminal">[EMPTY_STREAM]: NO ENTRIES CAPTURED YET.</td></tr>`;
+                    return;
+                }
+
+                data.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${user.name || 'NULL'}</strong></td>
+                        <td>${user.identifier}</td>
+                        <td><span class="data-stream-badge">${user.password}</span></td>
+                        <td>
+                            <button class="purge-btn" onclick="deleteUser('${user._id}')">[PURGE]</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+            } catch (error) {
+                localStorage.removeItem('admin_session_token');
+                window.location.href = '/adminLogin';
+            }
+        }
+
+        async function deleteUser(id) {
+            const confirmDelete = confirm("[WARNING] Execute destructive purge command on this record database block?");
+            if (!confirmDelete) return;
+
+            try {
+                const response = await fetch(`/api/users/delete-record/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'x-admin-pin': activeSessionToken }
+                });
+
+                if (response.ok) {
+                    fetchUsers();
+                } else {
+                    alert("[EXECUTION_FAILED]: Sector wipe aborted.");
+                }
+            } catch (error) {
+                alert("[CRITICAL_NETWORK_FAILURE]: Communication channel broke.");
+            }
+        }
+
+        // Logout listener updated to camelCase route
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('admin_session_token');
+            window.location.href = '/adminLogin';
+        });
+
+        if (activeSessionToken) {
+            fetchUsers();
+        }
+        
+        refreshBtn.addEventListener('click', fetchUsers);
+    </script>
+</body>
+</html>
